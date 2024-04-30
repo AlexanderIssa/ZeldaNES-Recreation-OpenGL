@@ -1,0 +1,16 @@
+﻿  ball.cpp
+  BallManager.cpp
+  field.cpp
+  FieldManager.cpp
+  game.cpp
+  keyProcess.cpp
+  object.cpp
+  random.cpp
+  ShapeDraw.cpp
+  SpriteDemoManager.cpp
+  stateManager.cpp
+  Generating Code...
+SpriteDemoManager.obj : error LNK2019: unresolved external symbol SOIL_load_OGL_texture referenced in function "public: void __cdecl SpriteDemoManagerC::init(int,int)" (?init@SpriteDemoManagerC@@QEAAXHH@Z)
+..\OpenGLFramework\lib\\glut32.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+..\OpenGLFramework\lib\\soil.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+C:\Dev\Students\CH20\Alex.Issa\Prog1\Zelda\x64\Debug\Game.exe : fatal error LNK1120: 1 unresolved externals
