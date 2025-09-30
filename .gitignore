@@ -5,3 +5,43 @@
 /Zelda/OpenGLFramework/Debug
 /Zelda/x64/
 /Zelda/x86/
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+
+# VS generated
+.vs/
+.vscode/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+*.nuget.props
+*.nuget.targets
+
+# Rider/Resharper/JetBrains
+.idea/
+*.DotSettings.user
+
+# User-specific
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Others
+*.cache
+*.pdb
+*.obj
+*.exe
+*.dll
+*.log
