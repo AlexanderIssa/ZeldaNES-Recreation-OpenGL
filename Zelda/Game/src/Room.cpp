@@ -45,6 +45,7 @@ void Room::init()
 	currSubRoom = &rOverWorldArr[8]; // sub room 8 is the subroom link spawns in, i think this locks the curr room into [8] and changes its id to the curr room id
 	currSRNum = 8;
 	stairsSFX = Sound::LoadSound("asset/LOZ_Stairs.wav");
+	errorSFX = Sound::LoadSound("asset/LOZ_Enemy_Hit.wav");
 }
 void Room::shutdown()
 {
@@ -61,32 +62,60 @@ SubRoom& Room::GetCurrSR()
 	return rOverWorldArr[currSRNum];
 }
 
-void Room::MoveNorth()
+bool Room::MoveNorth()
 {
-	assert(currSRNum + 16 <= numRooms);
+	if (currSRNum + 16 > numRooms)
+	{
+		fprintf(stderr, "Cannot move north, out of bounds!\n");
+		Sound::Playback(errorSFX);
+		return false;
+	}
+	//assert(currSRNum + 16 <= numRooms);
 	currSRNum += 16;
 	currSubRoom = &rOverWorldArr[currSRNum];	// currSubRoom changes only effect the 8th index
+	return true;
 }
 
-void Room::MoveEast()
+bool Room::MoveEast()
 {
-	assert(currSRNum + 1 <= numRooms);
+	if (currSRNum + 1 > numRooms)
+	{
+		fprintf(stderr, "Cannot move east, out of bounds!\n");
+		Sound::Playback(errorSFX);
+		return false;;
+	}
+	//assert(currSRNum + 1 <= numRooms);
 	currSRNum += 1;
 	currSubRoom = &rOverWorldArr[currSRNum];
+	return true;
 }
 
-void Room::MoveWest()
+bool Room::MoveWest()
 {
-	assert(currSRNum - 1 >= 0);
+	if (currSRNum - 1 < 0)
+	{
+		fprintf(stderr, "Cannot move west, out of bounds!\n");
+		Sound::Playback(errorSFX);
+		return false;
+	}
+	//assert(currSRNum - 1 >= 0);
 	currSRNum -= 1;
 	currSubRoom = &rOverWorldArr[currSRNum];
+	return true;
 }
 
-void Room::MoveSouth()
+bool Room::MoveSouth()
 {
-	assert(currSRNum - 16 >= 0);
+	if (currSRNum - 16 < 0)
+	{
+		fprintf(stderr, "Cannot move south, out of bounds!\n");
+		Sound::Playback(errorSFX);
+		return false;
+	}
+	//assert(currSRNum - 16 >= 0);
 	currSRNum -= 16;
 	currSubRoom = &rOverWorldArr[currSRNum];
+	return true;
 }
 
 void Room::MoveToCave()

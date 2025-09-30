@@ -18,13 +18,22 @@ Player* Player::pInstance = NULL;
 
 Player::Player()	// constructor
 {
-
 	x = 0;
 	y = 0;
 	currentFrame = 0;
 	totalFramesPerWalk = 2;
 	totalFramesPerAttack = 4;
 	currDirection = DOWN;
+	mLinkTextureMap = 0;
+	mLinkAttacksTextureMap = 0;
+	mLinkWalkTextureMap = 0;
+	prevDirection = NONE;
+	swordBeamSFX = 0;
+	swordSwingSFX = 0;
+	swordHitLX = 0;
+	swordHitLY = 0;
+	swordHitRX = 0;
+	swordHitUY = 0;
 }
 
 Player* Player::CreateInstance()
@@ -40,6 +49,7 @@ Player* Player::CreateInstance()
 void Player::init()
 {	// initialize things like textures that we cant init in the constructor
 	mLinkWalkTextureMap = SOIL_load_OGL_texture("asset/BasicMovementSheet.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+	assert(mLinkWalkTextureMap != 0);
 	if (mLinkWalkTextureMap == 0) {
 		fprintf(stderr,"SOIL loading error: %s\n", SOIL_last_result());
 		// Handle the error appropriately, e.g., return an error code or exit the program.
@@ -155,16 +165,9 @@ bool Player::GetHasSword()
 
 void Player::Move(MoveDirection direction)	// move the player by the direction that will be passed
 {
-	// unorthodox usage of prev/current... typical (expected pattern)
-	// func(updated) {
-	//    prev = current;
-	//    current = updated;
-	// }
-	//
-	// so current is always the most recent input received and prev would be the input from a prior frame
-
 	if (direction != NONE)
 	{
+		prevDirection = currDirection;
 		currDirection = direction;
 	}
 
@@ -177,7 +180,6 @@ void Player::Move(MoveDirection direction)	// move the player by the direction t
 				{
 					x += moveSpeed;
 					isMoving = true;
-					prevDirection = RIGHT;
 				}
 			}
 			break;
@@ -190,7 +192,6 @@ void Player::Move(MoveDirection direction)	// move the player by the direction t
 				{
 					x -= moveSpeed;
 					isMoving = true;
-					prevDirection = LEFT;
 				}
 			}
 			break;
@@ -203,7 +204,6 @@ void Player::Move(MoveDirection direction)	// move the player by the direction t
 				{
 					y += moveSpeed;
 					isMoving = true;
-					prevDirection = UP;
 				}
 			}
 			break;
@@ -216,7 +216,6 @@ void Player::Move(MoveDirection direction)	// move the player by the direction t
 				{
 					y -= moveSpeed;
 					isMoving = true;
-					prevDirection = DOWN;
 				}
 			}
 			break;

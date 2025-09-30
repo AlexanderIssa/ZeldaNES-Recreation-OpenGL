@@ -9,10 +9,10 @@ public:
 	void shutdown();
 	SubRoom* GetSubRooms();
 	SubRoom& GetCurrSR();
-	void MoveNorth();
-	void MoveSouth();
-	void MoveEast();
-	void MoveWest();
+	bool MoveNorth();
+	bool MoveSouth();
+	bool MoveEast();
+	bool MoveWest();
 	void MoveToCave();
 	void MoveToRoom(int roomNum);
 
@@ -25,7 +25,7 @@ private:
 	int quadHeight = 1080;
 	int numRooms = 128; // 129 rooms (including first cave) - 1 for 0 index
 	int currSRNum = 8;
-	int stairsSFX;
+	int stairsSFX, errorSFX;
 	SubRoom rOverWorldArr[128];
 	SubRoom* currSubRoom = rOverWorldArr;
 };

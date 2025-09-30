@@ -32,6 +32,25 @@
 #include "Room.h"
 #include "PauseMenu.h"
 
+// Defines for Controls
+
+// -- Map Controls --
+#define INPUT_MAPLEFT 'A'
+#define INPUT_MAPRIGHT 'D'
+#define INPUT_MAPDOWN 'S'
+#define INPUT_MAPUP 'W'
+
+// -- Player Controls --
+#define INPUT_LEFT VK_LEFT
+#define INPUT_RIGHT VK_RIGHT
+#define INPUT_DOWN VK_DOWN
+#define INPUT_UP VK_UP
+#define INPUT_ATTACK 'X'
+#define INPUT_SPECIAL 'Z'
+
+// -- Menu Controls --
+#define INPUT_START VK_RETURN
+
 IGame* CreateGame() {
 	return new CGame();
 }
@@ -138,19 +157,19 @@ void CGame::UpdateFrame(uint32_t milliseconds)
 		if (Player::GetInstance()->GetCanMove() == true)	// if the player can move in the first place
 		{
 			// in the actual game UP and DOWN take priority over RIGHT and LEFT
-			if (g_keys->keyDown[VK_UP])
+			if (g_keys->keyDown[INPUT_UP])
 			{
 				Player::GetInstance()->Move(UP);	// Up = 3
 			}
-			else if (g_keys->keyDown[VK_DOWN])
+			else if (g_keys->keyDown[INPUT_DOWN])
 			{
 				Player::GetInstance()->Move(DOWN);	// Down = 4
 			}
-			else if (g_keys->keyDown[VK_RIGHT])
+			else if (g_keys->keyDown[INPUT_RIGHT])
 			{
 				Player::GetInstance()->Move(RIGHT);	// right = 1
 			}
-			else if (g_keys->keyDown[VK_LEFT])
+			else if (g_keys->keyDown[INPUT_LEFT])
 			{
 				Player::GetInstance()->Move(LEFT);	// left = 2
 			}
@@ -160,7 +179,7 @@ void CGame::UpdateFrame(uint32_t milliseconds)
 			}
 		}
 
-		if (g_keys->keyDown[0x58] && !pressingX) // X key
+		if (g_keys->keyDown[INPUT_ATTACK] && !pressingX) // X key
 		{
 			if (Player::GetInstance()->GetHasSword() == true)	// only able to attack once the player has picked up the sword
 			{
@@ -169,15 +188,14 @@ void CGame::UpdateFrame(uint32_t milliseconds)
 					Player::GetInstance()->Attack();
 				}
 			}
-			//g_keys->keyDown[0x58] = false; // reset the key to false so it doesnt spam the button on tick
-			pressingX = true;
+			pressingX = true; // reset the key to false so it doesnt spam the button on tick
 		}
-		else if (!g_keys->keyDown[0x58] && pressingX)	// to make sure player can't hold X
+		else if (!g_keys->keyDown[INPUT_ATTACK] && pressingX)	// to make sure player can't hold X
 		{
 			pressingX = false;
 		}
 
-		if (g_keys->keyDown[0x5A]) // Z key
+		if (g_keys->keyDown[INPUT_SPECIAL]) // Z key
 		{
 			//Player::GetInstance()->Special();
 
@@ -186,44 +204,49 @@ void CGame::UpdateFrame(uint32_t milliseconds)
 			//  would happen in some kind of helper class in a case like this where they are so many inputs. i'm also not sure
 			//  that this is actually doing anything, since the framework appears to set keyDown each frame
 
-			g_keys->keyDown[0x5A] = false;	// reset the key to false so it doesnt spam the button on tic
+			g_keys->keyDown[INPUT_SPECIAL] = false;	// reset the key to false so it doesnt spam the button on tic
 		}
 
-		if (g_keys->keyDown[VK_RETURN]) // enter key
+		if (g_keys->keyDown[INPUT_START]) // enter key
 		{
 			//Player::GetInstance()->PauseGame();
-			g_keys->keyDown[0x5A] = false;	// reset the key to false so it doesnt spam the button on tic
+			g_keys->keyDown[INPUT_ATTACK] = false;	// reset the key to false so it doesnt spam the button on tic
 		}
 
-		if (g_keys->keyDown[0x57]) // W key
+		if (g_keys->keyDown[INPUT_MAPUP]) // W key
 		{
-			Room::GetInstance()->MoveNorth();
-			SpriteDemoManagerC::GetInstance()->MoveUVUp();
-			g_keys->keyDown[0x57] = false;	// reset the key to false so it doesnt spam the button on tick
+			if (Room::GetInstance()->MoveNorth())
+			{
+				SpriteDemoManagerC::GetInstance()->MoveUVUp();
+			}
+			g_keys->keyDown[INPUT_MAPUP] = false;	// reset the key to false so it doesnt spam the button on tick
 		}
 
-		if (g_keys->keyDown[0x53]) // S key
+		if (g_keys->keyDown[INPUT_MAPDOWN]) // S key
 		{
-			Room::GetInstance()->MoveSouth();
-			SpriteDemoManagerC::GetInstance()->MoveUVDown();
-			g_keys->keyDown[0x53] = false;	// reset the key to false so it doesnt spam the button on tick
+			if (Room::GetInstance()->MoveSouth())
+			{
+				SpriteDemoManagerC::GetInstance()->MoveUVDown();
+			}
+			g_keys->keyDown[INPUT_MAPDOWN] = false;	// reset the key to false so it doesnt spam the button on tick
 		}
 
-// use #define to improve readability & consistency... also use character vs. ascii code for readability
-//  obviously, these #define would generally be at top of file, but i included here for easier understanding of diff
-#define INPUT_LEFT 'A'
-		if (g_keys->keyDown[INPUT_LEFT]) // A key
+		if (g_keys->keyDown[INPUT_MAPLEFT]) // A key
 		{
-			Room::GetInstance()->MoveWest();
-			SpriteDemoManagerC::GetInstance()->MoveUVLeft();
-			g_keys->keyDown[0x41] = false;	// reset the key to false so it doesnt spam the button on tick
+			if (Room::GetInstance()->MoveWest())
+			{
+				SpriteDemoManagerC::GetInstance()->MoveUVLeft();
+			}
+			g_keys->keyDown[INPUT_MAPLEFT] = false;	// reset the key to false so it doesnt spam the button on tick
 		}
 
-		if (g_keys->keyDown[0x44]) // D Key
+		if (g_keys->keyDown[INPUT_MAPRIGHT]) // D Key
 		{
-			Room::GetInstance()->MoveEast();
-			SpriteDemoManagerC::GetInstance()->MoveUVRight();
-			g_keys->keyDown[0x44] = false;
+			if (Room::GetInstance()->MoveEast())
+			{
+				SpriteDemoManagerC::GetInstance()->MoveUVRight();
+			}
+			g_keys->keyDown[INPUT_MAPRIGHT] = false;
 		}
 
 		if (Room::GetInstance()->GetCurrSR().CheckCollisions(pX, pY) == 1)
