@@ -5,6 +5,7 @@ public:
 	Room();
 	static Room* CreateInstance();
 	static Room* GetInstance() { return rInstance; };
+	static void DeleteInstance() { delete rInstance; };
 	void init();
 	void shutdown();
 	SubRoom* GetSubRooms();

@@ -77,9 +77,9 @@ CGame::~CGame()
 	// prefer delete in reverse of create (also true for init/shutdown)
 	//
 	// also note: for singleton pattern, PauseMenu::DeleteInstance() would be better for intuitive pairing w/ Create
-	delete PauseMenu::GetInstance();
-	delete Room::GetInstance();
-	delete Player::GetInstance();
+	PauseMenu::DeleteInstance();
+	Room::DeleteInstance();
+	Player::DeleteInstance();
 	delete SpriteDemoManagerC::GetInstance();
 	delete FieldManagerC::GetInstance();
 }

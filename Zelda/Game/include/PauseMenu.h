@@ -8,6 +8,7 @@ public:
 	void init();
 	static PauseMenu* CreateInstance();
 	static PauseMenu* GetInstance() { return pmInstance; };
+	static void DeleteInstance() { delete pmInstance; };
 	void RenderMenu();
 	void RenderItems(bool hasSword);
 

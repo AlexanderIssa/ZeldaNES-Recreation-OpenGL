@@ -17,6 +17,7 @@ public:
 	void shutdown();
 	static Player* CreateInstance();
 	static Player* GetInstance() { return pInstance; };
+	static void DeleteInstance() { delete pInstance; };
 	bool GetCanMove() { return canMove; };
 	bool GetIsAttackng() { return isAttacking; };
 	void RenderPlayer();
